@@ -1,31 +1,21 @@
-// Include required modules
-const {HttpServer} = require('@aliceo2/web-ui');
-const jwtconfig = {expiration: "1d"};
-const {WebSocket, WebSocketMessage, LogManager} = require('@aliceo2/web-ui');
+const { HttpServer, WebSocket, WebSocketMessage, LogManager } = require('@aliceo2/web-ui');
 
 const logger = LogManager.getLogger('live-demo');
 
-// create instance of http server
-const http = new HttpServer({
-  port: 8080
-},
-jwtconfig);
-
-// Server `public` folder
+const http = new HttpServer({ port: 8080});
+const wsServer = new WebSocket(http);
 http.addStaticPath('public');
 
-http.get('/hi', (req, res) => {
-    res.status(200).json({message: 'hi'})
-  }, { public: false }); // turns off JWT verification
+http.get('/hello-world', (_, res) => {
+  res.status(200).json({message: 'Hello World!'});
+}, {public: true});
 
-
-
-const ws = new WebSocket(http);
-// Print all messages with command 'print'
-ws.bind('hello', (message) => {
-  console.log(message.payload);
-  // ...and send back 'print-response'
-  return new WebSocketMessage().setCommand('print-response').setPayload({message: 'hello-back'});
+http.get('/hello-private', (_, res) => {
+  res.status(200).json({message: 'Hi, there'})
 });
 
-logger.infoMessage('HI');
+wsServer.bind('hello', (message) => {
+  logger.infoMessage(`Received message: ${message}`);
+
+  return new WebSocketMessage(200).setCommand('hello').setPayload({ message: 'Hello, browser!' });
+});
