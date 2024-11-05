@@ -14,4 +14,6 @@ const menu = (model) => h('ul', [
     h('li', h('a', {onclick: (e) => model.homeModel.userName="Jasper"}, model.homeModel.userName)),
     h('li', h('a', {onclick: (e) => model.router.handleLinkEvent(e), href: '?page=item&id=2'}, 'Item 2')),
     h('li', h('a', {onclick: (e) => model.router.handleLinkEvent(e), href: '?page=item&id=3'}, 'Item 3')),
+    h('li', h('a', {onclick: (e) => model.homeModel.data}, model.homeModel.getdata)),
+    model.homeModel.data.match
   ]);
