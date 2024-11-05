@@ -1,3 +1,4 @@
+import homeModel from './pages/home/homeModel.js';
 import {Observable, QueryRouter, Loader, sessionService} from '/js/src/index.js';
 
 /**
@@ -15,7 +16,9 @@ export default class Model extends Observable {
     this.session.personid = parseInt(this.session.personid, 10);
 
     this.loader = new Loader(this);
-    this.loader.bubbleTo(this);
+    this.homeModel = new homeModel(this)
+    this.loader.bubbleTo(homeModel)
+    this.homeModel.bubbleTo(this);
 
     // Setup router
     this.router = new QueryRouter();

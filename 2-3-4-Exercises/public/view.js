@@ -30,5 +30,5 @@ const content = (model) => h('div', [
   switchCase(model.router.params.page, {
     home: homepage,
     about: aboutPage,
-  })()
+  })(model)
 ]);
